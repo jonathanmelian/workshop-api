@@ -21,14 +21,13 @@ public class HelloWorldInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
 
-        System.out.println(" Request auth " + request.getHeader("Authorization") );
-        for(Validator validator : validators){
+        for (Validator validator : validators) {
             Optional<String> header = Optional.ofNullable(request.getHeader(validator.getHeaderKey()));
             if (header.isPresent()) {
                 if (!header.get().equals(validator.getHeaderValue())) {
                     throw new ValidationException(validator.getErrorMessage());
                 }
-            }else {
+            } else {
                 throw new ValidationException(validator.getHeaderKey() + " is missing or empty");
             }
         }

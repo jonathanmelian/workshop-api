@@ -1,5 +1,6 @@
 package com.workshop.config;
 
+import com.workshop.constants.HelloWorldConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +33,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     private String resourceId;
 
     @Value("${access_token.validity_period:3600}")
-    int accessTokenValiditySeconds = 3600;
+    int accessTokenValiditySeconds;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -51,13 +52,14 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
         clients.inMemory()
-                .withClient("workshop")
-                .authorizedGrantTypes("password", "client_credentials")
-                .authorities("ROLE_CLIENT")
-                .scopes("read", "write")
+                .withClient(HelloWorldConstants.CLIENT_NAME)
+                .authorizedGrantTypes(HelloWorldConstants.PASSWORD, HelloWorldConstants.CLIENT_CREDENTIALS)
+                .authorities(HelloWorldConstants.ROLE_CLIENT)
+                .scopes(HelloWorldConstants.READ_SCOPE, HelloWorldConstants.WRITE_SCOPE)
                 .resourceIds(resourceId)
                 .secret("secret")
-                .accessTokenValiditySeconds(accessTokenValiditySeconds);
+                .accessTokenValiditySeconds(accessTokenValiditySeconds)
+                .refreshTokenValiditySeconds(50000);
     }
 
 

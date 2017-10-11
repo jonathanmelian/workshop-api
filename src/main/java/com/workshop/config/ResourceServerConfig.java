@@ -21,11 +21,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/closed/*").authenticated()
-            .anyRequest().permitAll()
-            .and()
-            .httpBasic()
-            .and()
-            .csrf().disable();
+                .antMatchers("/closed/*").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .httpBasic()
+                .and()
+                .csrf().disable();
     }
 }

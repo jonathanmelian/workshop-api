@@ -23,11 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class WorkshopApiApplicationTests {
 
-	private static String USERNAME = "user";
-	private static String PASSWORD = "password";
-	private static String CLIENT_ID = "workshop";
-	private static String CLIENT_SECRET = "secret";
-	private static String GRANT_TYPE = "password";
+	private final String USERNAME = "user";
+	private final String PASSWORD = "password";
+	private final String CLIENT_ID = "workshop";
+	private final String CLIENT_SECRET = "secret";
+	private final String GRANT_TYPE = "password";
+	private final String LOCALHOST =   "http://localhost:";
+	private final String OAUTH = "/oauth/token";
+	private final String HELLO = "/hello";
+	private final String CLOSED = "/closed";
 
 	@LocalServerPort
 	private int port;
@@ -49,13 +53,13 @@ public class WorkshopApiApplicationTests {
 	}
 	private String authorize(String username, String password, String clientId, String clientSecret, String grantType) {
 		HttpEntity entity = getAuthorizationRequest(username, password, clientId, clientSecret, grantType);
-		ResponseEntity<JsonNode> response = restTemplate.exchange("http://localhost:" + port + "/oauth/token", HttpMethod.POST, entity, JsonNode.class);
+		ResponseEntity<JsonNode> response = restTemplate.exchange(LOCALHOST + port + OAUTH, HttpMethod.POST, entity, JsonNode.class);
 		return response.getBody().get("access_token").toString();
 	}
 
 	@Test
 	public void unauthorizedHello() throws Exception {
-		ResponseEntity<String> hello = restTemplate.exchange("http://localhost:" + port + "/closed/hello", HttpMethod.GET, null, String.class);
+		ResponseEntity<String> hello = restTemplate.exchange(LOCALHOST + port + CLOSED + HELLO, HttpMethod.GET, null, String.class);
 		assertThat(hello.getStatusCode().equals(HttpStatus.UNAUTHORIZED));
 	}
 
@@ -64,13 +68,13 @@ public class WorkshopApiApplicationTests {
         String accessToken = authorize(USERNAME, PASSWORD, CLIENT_ID, CLIENT_SECRET, GRANT_TYPE);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
-        ResponseEntity<String> hello = restTemplate.exchange("http://localhost:" + port + "/closed/hello", HttpMethod.GET, new HttpEntity(null, headers), String.class);
+        ResponseEntity<String> hello = restTemplate.exchange(LOCALHOST + port + CLOSED +  HELLO, HttpMethod.GET, new HttpEntity(null, headers), String.class);
         assertThat(hello.getStatusCode().equals(HttpStatus.OK));
     }
 
     @Test
     public void openHello() throws Exception {
-        ResponseEntity<String> hello = restTemplate.exchange("http://localhost:" + port + "/hello", HttpMethod.GET, null, String.class);
+		ResponseEntity<String> hello = restTemplate.exchange(LOCALHOST + port + HELLO, HttpMethod.GET, null, String.class);
         assertThat(hello.getStatusCode().equals(HttpStatus.OK));
     }
 
