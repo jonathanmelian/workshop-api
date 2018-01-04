@@ -1,14 +1,20 @@
 # API workshop I
 
-First API workshop, project done to learn about headers
+Second API workshop, project done to learn about headers
 
 ## How to?
 
-Use Get method on /hello with or without the follwing headers
+Hit /oauth/token with POST using the following credentials to get a token
 
-Content-Type which should have value "application/json" as a value
+	USERNAME = "user";
+	PASSWORD = "password";
+	CLIENT_ID = "workshop";
+	CLIENT_SECRET = "secret";
+	GRANT_TYPE = "password";
 
-Authorization whitch should have "bearer 12345" as a value
+Hit /closed/hello using the token adquired from last call to get access to private endpoint
+
+Hit /hello using any token or none to acces public endpoint
 
 
 ## Built With

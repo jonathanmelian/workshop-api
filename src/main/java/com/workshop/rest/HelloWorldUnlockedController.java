@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HelloWorldController {
+public class HelloWorldUnlockedController {
 
-    private final String hello = "Hello";
 
-    @RequestMapping("/hello")
+    @RequestMapping("/closed/hello")
     public String hello() {
-        return HelloWorldConstants.OPEN_HELLO;
+        return HelloWorldConstants.CLOSED_HELLO;
     }
 
 
